@@ -19,13 +19,14 @@ public class Snake {
 		snake = new ArrayList<SnakeSegment>();
 		head = new SnakeSegment(location, BODY_SIZE);
 		snake.add(head);
+		
 
 		currentDirection = Direction.RIGHT;
 	}
 
 	public void feed() {
 		//1. add a new SnakeSegment object to the snake
-		snake.add(new SnakeSegment(snake.get(0).getLocation(), BODY_SIZE));
+		snake.add(new SnakeSegment(snake.get(snake.size()-1).getLocation(), BODY_SIZE));
 	}
 
 	public Location getHeadLocation() {
@@ -54,18 +55,22 @@ public class Snake {
 			break;
 			default:
 				newLoc = new Location(0,0);
+				break;
+				
+			
 		}
+	
+	
 
 		//2. Iterate through the SnakeSegments in reverse order
 		//2a. Update each snake segment to the location of the segment 
 		//    in front of it.
-		for(int i = snake.size(); i>1;i--) {
+		for( int i = snake.size()-1; i>0;i--) {
 			snake.get(i).setLocation(snake.get(i-1).getLocation());
 		}
 		
 		//3. set the location of the head to the new location calculated in step 1
 		snake.get(0).setLocation(newLoc);
-
 		//4. set canMove to true
 		canMove = true;
 	}
@@ -106,7 +111,7 @@ public class Snake {
 	public boolean isOutOfBounds() {
 		//1. complete the method so it returns true if the head of the snake is outside of the window
 		//   and false otherwise
-		if(snake.get(0).getLocation().x<0|snake.get(0).getLocation().x+20>_00_SnakeGame.WIDTH|snake.get(0).getLocation().y+20>_00_SnakeGame.HEIGHT|snake.get(0).getLocation().y<0) {
+		if(snake.get(0).getLocation().x<0|snake.get(0).getLocation().x+20>_00_SnakeGame.WINDOW_WIDTH|snake.get(0).getLocation().y+20>_00_SnakeGame.WINDOW_HEIGHT|snake.get(0).getLocation().y<0) {
 			return true;
 		}
 		return false;
@@ -115,8 +120,8 @@ public class Snake {
 	public boolean isHeadCollidingWithBody() {
 		//1. complete the method so it returns true if the head is located
 		//   in the same location as any other body segment
-		for(int i = 1; i < snake.size()-1;i++) {
-			if(snake.get(i).getLocation()==snake.get(0).getLocation()) {
+		for(int i = 1; i < snake.size();i++) {
+			if(snake.get(i).getLocation().equals(snake.get(0).getLocation())) {
 				return true;
 			}
 		}
